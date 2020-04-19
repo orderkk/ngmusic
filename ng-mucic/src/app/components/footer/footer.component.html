@@ -14,5 +14,5 @@
             <!-- <i nz-icon nzType="unordered-list" nzTheme="outline" class="list"></i> -->
         </div>
     </div>
-    <app-back [@childAnimation]="musicData.isDetailShow ? 'sideUp' : 'sideDown'" #appBack></app-back>
+    <app-back [run]="getNextandPre" [@childAnimation]="musicData.isDetailShow ? 'sideUp' : 'sideDown'" #appBack></app-back>
 </footer>

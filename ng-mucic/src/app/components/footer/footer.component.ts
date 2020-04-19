@@ -43,6 +43,10 @@ export class FooterComponent implements OnInit {
     // console.log('ngOnChanges')
   }
   ngOnInit(): void {
+    for (let i = 0; i < this.musicData.musicLists.length; i ++) {
+      this.musicData.musicLists[i].src =  this.http + this.musicData.musicLists[i].id + '.mp3'
+      this.musicData.musicLists[i].durationTime = this.musicData.formaTimeMinutes(this.musicData.musicLists[i].duration)
+    }
     var cur = this.musicData.get('curMusicDetail') ? this.musicData.get('curMusicDetail') : this.musicData.musicLists[0]
     this.musicData.curMusicDetail = {
       id: cur.id,
@@ -50,10 +54,10 @@ export class FooterComponent implements OnInit {
       singer: '李志', // 演唱者
       issueTime: '', // 发行时间
       album: '', // 专辑
-      src: this.http + cur.id + '.mp3', // 歌曲路径
+      src: cur.src, // 歌曲路径
       img: '', // 歌曲配图
       duration: cur.duration, // 时长 （03:45）格式
-      durationTime: this.musicData.formaTimeMinutes(cur.duration), // 时长 毫秒格式
+      durationTime: cur.durationTime, // 时长 毫秒格式
       curTime: cur.curTime, // 当前播放进度
       isPlay: false, // 播放or暂停
       index: cur.index
@@ -82,13 +86,12 @@ export class FooterComponent implements OnInit {
 
     audio.addEventListener("canplay", function () {   //当浏览器能够开始播放指定的音频/视频时，发生 canplay 事件。
       console.log("event canplay: " + (new Date()).getTime());
-      _this.appBack.count = 0
     });
 
     audio.addEventListener("play", function () {   //开始播放时触发
       console.log("event play: " + (new Date()).getTime());
       _this.getNextandPre()
-      
+      _this.appBack.count = 0
       _this.appBack.timer = setInterval(() => {
         _this.appBack.count += 1000
         _this.musicData.curMusicDetail.curTime = _this.musicData.formatTime(_this.appBack.count / 1000)
@@ -109,11 +112,8 @@ export class FooterComponent implements OnInit {
       _this.musicData.curMusicDetail.isPlay = false
       clearInterval(_this.appBack.InterVal)
       clearInterval(_this.appBack.timer)
-      
-      console.log(_this.musicData.nextMusicDetail)
       _this.musicData.curMusicDetail = {}
       _this.musicData.curMusicDetail = _this.musicData.nextMusicDetail
-      console.log(_this.musicData.curMusicDetail)
 
       setTimeout(function () {
         _this.toggle()

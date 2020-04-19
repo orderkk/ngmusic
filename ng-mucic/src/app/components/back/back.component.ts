@@ -12,6 +12,7 @@ export class BackComponent implements OnInit {
   @ViewChild('audioElement') public audioElement: any
   @ViewChild('progressBarElement') public progressBarElement: any
 
+  @Input() run: any
   public isPlay: boolean = true
   public currentLineWidth: number = 0
   public data: any = HTMLAudioElement
@@ -77,7 +78,6 @@ export class BackComponent implements OnInit {
     this.data = audio
 
     this.barWidth = this.progressBarElement.nativeElement.clientWidth;
-    console.log(this.progressBarElement)
 
   }
 
@@ -99,14 +99,20 @@ export class BackComponent implements OnInit {
   }
 
   chooseMusic(val: any, key: number): void {
-    this.musicData.curMusicDetail = {
-      id: val.id,
-      name: val.name,
-      src: this.http + val.id + '.mp3',
-      img: '',
-      duration: val.durationTime,
-      // durationTime: this.formaTimeMinutes(val.durationTime)
-    }
+    this.musicData.curMusicDetail = this.musicData.musicLists[key]
+    this.musicData.curMusicDetail.isPlay = false
+    this.currentLineWidth = 0
+    clearInterval(this.InterVal)
+    clearInterval(this.timer)
+
+    this.close()
+    this.run()
+
+
+    setTimeout(() => {
+      this.toggle()
+    }, 100);
+    console.log(this.musicData.nextMusicDetail)
   }
 
   delMusic(val: number): void {
@@ -121,6 +127,10 @@ export class BackComponent implements OnInit {
 
     this.musicData.curMusicDetail.isPlay = false
     this.musicData.curMusicDetail = this.musicData.preMusicDetail
+
+    setTimeout(() => {
+      this.toggle()
+    }, 100);
   }
 
   // 下一首
@@ -130,5 +140,10 @@ export class BackComponent implements OnInit {
     clearInterval(this.timer)
     this.musicData.curMusicDetail.isPlay = false
     this.musicData.curMusicDetail = this.musicData.nextMusicDetail
+
+
+    setTimeout(() => {
+      this.toggle()
+    }, 100);
   }
 }
