@@ -1,0 +1,93 @@
+<div class="music_back">
+    <div class="back_header">
+        <div class="back_btn" (click)="closeSelf()">
+            <i nz-icon nzType="arrow-left" nzTheme="outline"></i>
+        </div>
+        <div class="back_name">
+            {{musicData.curMusicDetail.name}}
+        </div>
+        <div class="back_share">
+            <i nz-icon nzType="share-alt" nzTheme="outline"></i>
+        </div>
+    </div>
+    <div class="back_content" *ngIf="!isShowLyric">
+        <div class="music_img" (click)="lyric()">
+            <img src="../../../assets/01.jpg" alt="" #musicImg>
+        </div>
+        <div class="icon_list">
+            <div>
+                <i nz-icon nzType="heart" nzTheme="outline"></i>
+            </div>
+            <div>
+                <i nz-icon nzType="download" nzTheme="outline"></i>
+            </div>
+            <div>
+                <i nz-icon nzType="bell" nzTheme="outline"></i>
+            </div>
+            <div>
+                <i nz-icon nzType="message" nzTheme="outline"></i>
+            </div>
+            <div>
+                <i nz-icon nzType="more" nzTheme="outline"></i>
+            </div>
+        </div>
+    </div>
+    <div class="back_lyric" *ngIf="isShowLyric" (click)="lyric()">
+        <nz-spin nzTip="歌词页面暂未完成..."></nz-spin>
+    </div>
+    <div class="back_footer">
+        <div class="progress_bar">
+            <span class="current_time">{{musicData.curMusicDetail.curTime}}</span>
+            <div class="progress_bar_wrapper">
+                <div #progressBarElement class="progress_bar_box">
+                    <div class="bar_line">
+                        <div class="current_line" [ngStyle]="{'width': currentLineWidth + 'px'}"></div>
+                        <div [ngStyle]="{'left': currentLineWidth - 8 + 'px'}" class="control">
+                            <div class="progress_btn"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <span class="duration_time">{{musicData.curMusicDetail.duration}}</span>
+        </div>
+
+        <div class="back_btns">
+            <ul>
+                <li>
+                    <i nz-icon nzType="swap" nzTheme="outline" title="列表循环"></i>
+                </li>
+                <li>
+                    <i nz-icon nzType="step-backward" nzTheme="outline" (click)="preClick()"></i>
+                </li>
+                <li>
+                    <i nz-icon nzType="pause-circle" nzTheme="outline" class="pause" (click)="toggle()"
+                        *ngIf="musicData.curMusicDetail.isPlay"></i>
+                    <i nz-icon nzType="play-circle" nzTheme="outline" class="play" (click)="toggle()"
+                        *ngIf="!musicData.curMusicDetail.isPlay"></i>
+                </li>
+                <li>
+                    <i nz-icon nzType="step-forward" nzTheme="outline" (click)="nextClick()"></i>
+                </li>
+                <li>
+                    <i nz-icon nzType="ordered-list" nzTheme="outline" (click)="openLists()"></i>
+                </li>
+            </ul>
+        </div>
+
+
+        <nz-drawer [nzClosable]="false" [nzVisible]="visible" nzPlacement="bottom" [nzTitle]="nzTitle"
+            (nzOnClose)="close()">
+            <ul>
+                <li *ngFor="let item of musicData.musicLists; let key = index;" class="musicItem">
+                    <span (click)="chooseMusic(item, key)">{{item.name}}</span>
+                    <!-- <span class="close_btn"><i nz-icon nzType="close" nzTheme="outline" (click)="delMusic(key)"></i></!-->
+                </li>
+            </ul>
+        </nz-drawer>
+    </div>
+
+
+    <!-- audio标签 -->
+    <audio [src]="musicData.curMusicDetail.src" preload="auto" #audioElement>
+    </audio>
+</div>

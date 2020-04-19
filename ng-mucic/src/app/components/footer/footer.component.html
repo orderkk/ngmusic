@@ -1,0 +1,18 @@
+<footer>
+    <div class="music_player">
+        <div class="mucic_img" (click)="openBack()">
+            <img src="../../../assets/01.jpg" alt="">
+        </div>
+        <div class="music_name">
+            <p>{{musicData.curMusicDetail.name}}</p>
+        </div>
+        <div class="music_btn">
+            <i nz-icon nzType="pause-circle" nzTheme="outline" class="pause" (click)="toggle()"
+                *ngIf="musicData.curMusicDetail.isPlay"></i>
+            <i nz-icon nzType="play-circle" nzTheme="outline" class="play" (click)="toggle()"
+                *ngIf="!musicData.curMusicDetail.isPlay"></i>
+            <!-- <i nz-icon nzType="unordered-list" nzTheme="outline" class="list"></i> -->
+        </div>
+    </div>
+    <app-back [@childAnimation]="musicData.isDetailShow ? 'sideUp' : 'sideDown'" #appBack></app-back>
+</footer>
